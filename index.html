@@ -1,46 +1,251 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Treasure Rush Test</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #123b2a;
-      overflow: hidden;
-    }
+  <title>Treasure Rush</title>
 
-    #game-container {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="game-container"></div>
+<div id="app">
 
-<script>
-  document.body.innerHTML +=
-    '<div id="test" style="' +
-    'position:fixed;' +
-    'top:30px;' +
-    'left:0;' +
-    'right:0;' +
-    'text-align:center;' +
-    'color:white;' +
-    'font-size:30px;' +
-    'font-family:Arial;' +
-    'z-index:9999;">' +
-    'TREASURE RUSH TEST' +
-    '</div>';
-</script>
+  <!-- HOME -->
+  <section id="homeScreen" class="screen active">
+    <div class="logo">
+      <div>💎 TREASURE</div>
+      <strong>RUSH</strong>
+    </div>
+
+    <div class="balance-card">
+      <div>
+        <span>🪙 Coins</span>
+        <b id="homeCoins">0</b>
+      </div>
+
+      <div>
+        <span>💎 Gems</span>
+        <b id="homeGems">0</b>
+      </div>
+
+      <div>
+        <span>🏆 Best</span>
+        <b id="homeBest">0</b>
+      </div>
+    </div>
+
+    <button class="play-btn" onclick="startGame()">▶ PLAY</button>
+
+    <div class="menu-grid">
+      <button onclick="showScreen('missionsScreen')">🎯<span>Missions</span></button>
+      <button onclick="showScreen('leaderboardScreen')">🏆<span>Leaderboard</span></button>
+      <button onclick="showScreen('profileScreen')">👤<span>Profile</span></button>
+      <button onclick="showScreen('withdrawScreen')">💸<span>Withdraw</span></button>
+    </div>
+
+    <div class="rate">
+      🪙 20,000 Coins = $1<br>
+      <small>Minimum withdrawal: $100</small>
+    </div>
+  </section>
+
+
+  <!-- GAME -->
+  <section id="gameScreen" class="screen game-screen">
+
+    <div class="game-hud">
+      <div>⏱️ <span id="gameTimer">2:00</span></div>
+      <div>🪙 <span id="gameCoins">0</span></div>
+      <div>💎 <span id="gameGems">0</span></div>
+      <div>⭐ <span id="gameScore">0</span></div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="joystick">
+      <div id="joystickKnob"></div>
+    </div>
+
+    <button class="exit-game" onclick="endGame()">✕</button>
+
+  </section>
+
+
+  <!-- RESULT -->
+  <section id="resultScreen" class="screen">
+
+    <div class="result-box">
+      <div class="result-title">🏆 ROUND COMPLETE</div>
+
+      <div class="result-row">
+        🪙 Coins
+        <strong id="resultCoins">0</strong>
+      </div>
+
+      <div class="result-row">
+        💎 Gems
+        <strong id="resultGems">0</strong>
+      </div>
+
+      <div class="result-row">
+        ⭐ Score
+        <strong id="resultScore">0</strong>
+      </div>
+
+      <button class="play-btn" onclick="startGame()">▶ PLAY AGAIN</button>
+      <button class="secondary-btn" onclick="showScreen('homeScreen')">⌂ HOME</button>
+    </div>
+
+  </section>
+
+
+  <!-- MISSIONS -->
+  <section id="missionsScreen" class="screen">
+
+    <div class="page-title">🎯 DAILY MISSIONS</div>
+
+    <div class="card">
+
+      <div class="mission">
+        <span>🪙 Collect 100 Coins</span>
+        <b>+500 Coins</b>
+      </div>
+
+      <div class="mission">
+        <span>🎮 Play 3 Games</span>
+        <b>+1,000 Coins</b>
+      </div>
+
+      <div class="mission">
+        <span>💎 Find 5 Gems</span>
+        <b>+2,000 Coins</b>
+      </div>
+
+      <div class="mission">
+        <span>🎁 Find Treasure Chest</span>
+        <b>+5,000 Coins</b>
+      </div>
+
+    </div>
+
+    <button class="secondary-btn" onclick="showScreen('homeScreen')">
+      ← HOME
+    </button>
+
+  </section>
+
+
+  <!-- LEADERBOARD -->
+  <section id="leaderboardScreen" class="screen">
+
+    <div class="page-title">🏆 LEADERBOARD</div>
+
+    <div class="card leaderboard">
+
+      <div><span>🥇 Alex</span><b>25,000</b></div>
+      <div><span>🥈 Emma</span><b>22,500</b></div>
+      <div><span>🥉 John</span><b>21,700</b></div>
+      <div class="you"><span>👤 You</span><b id="myRankScore">0</b></div>
+
+    </div>
+
+    <button class="secondary-btn" onclick="showScreen('homeScreen')">
+      ← HOME
+    </button>
+
+  </section>
+
+
+  <!-- PROFILE -->
+  <section id="profileScreen" class="screen">
+
+    <div class="page-title">👤 PROFILE</div>
+
+    <div class="profile-card">
+
+      <div class="avatar">👤</div>
+
+      <h2 id="profileName">Treasure Player</h2>
+
+      <p>🪙 Coins: <b id="profileCoins">0</b></p>
+      <p>💎 Gems: <b id="profileGems">0</b></p>
+      <p>🎮 Games: <b id="profileGames">0</b></p>
+      <p>🏆 Best Score: <b id="profileBest">0</b></p>
+
+      <hr>
+
+      <p>👥 Referrals: <b id="profileReferrals">0</b></p>
+
+      <p class="ref-money">
+        💵 Referral Earnings:
+        <b>$<span id="profileRefCash">0.000</span></b>
+      </p>
+
+    </div>
+
+    <button class="secondary-btn" onclick="showScreen('homeScreen')">
+      ← HOME
+    </button>
+
+  </section>
+
+
+  <!-- WITHDRAW -->
+  <section id="withdrawScreen" class="screen">
+
+    <div class="page-title">💸 WITHDRAW</div>
+
+    <div class="withdraw-card">
+
+      <p>Available Coins</p>
+
+      <h1>🪙 <span id="withdrawCoins">0</span></h1>
+
+      <p>Your balance value</p>
+
+      <div class="dollar">
+        $<span id="withdrawDollar">0.00</span>
+      </div>
+
+      <div class="withdraw-info">
+        20,000 Coins = $1<br>
+        Minimum withdrawal = $100<br>
+        Required = 2,000,000 Coins
+      </div>
+
+      <h3>Withdrawal Method</h3>
+
+      <div class="withdraw-methods">
+        <button onclick="selectMethod('PayPal')">PayPal</button>
+        <button onclick="selectMethod('Crypto')">Crypto</button>
+        <button onclick="selectMethod('Other')">Other</button>
+      </div>
+
+      <div id="selectedMethod">No method selected</div>
+
+      <button class="withdraw-btn" onclick="requestWithdraw()">
+        REQUEST WITHDRAW
+      </button>
+
+    </div>
+
+    <button class="secondary-btn" onclick="showScreen('homeScreen')">
+      ← HOME
+    </button>
+
+  </section>
+
+</div>
+
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="game.js"></script>
 
 </body>
 </html>
