@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#07101b">
+<title>Treasure Rush — Adventure Runner</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><span>💎</span><b>TREASURE RUSH</b></div>
+    <div class="wallet">
+      <span>🪙 <b id="coinTop">0</b></span>
+      <span>💎 <b id="gemTop">0</b></span>
+      <span>💵 <b id="cashTop">$0.000</b></span>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="screen active">
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <div class="logo">💎<span>TREASURE</span><strong>RUSH</strong></div>
+        <div class="stats-card">
+          <div><small>COINS</small><b id="homeCoins">0</b></div>
+          <div><small>GEMS</small><b id="homeGems">0</b></div>
+          <div><small>BEST</small><b id="homeBest">0</b></div>
+        </div>
+        <button class="primary big" id="playBtn">▶ PLAY LEVEL 1</button>
+        <div class="home-ad-card">
+          <div class="ad-icon">▶</div>
+          <div class="home-ad-copy"><b>WATCH AD & EARN</b><small>Completed ad = +20 Coins</small></div>
+          <button class="ad-mini-btn" id="watchCoinAd">+20 🪙</button>
+        </div>
+        <div id="adStatus" class="ad-status hidden">✓ Reward credited after completed ad.</div>
+        <div class="grid2">
+          <button class="tile" data-screen="spin">🎡<b>SPIN</b><small>Rewards after ad</small></button>
+          <button class="tile" data-screen="referral">👥<b>REFERRAL</b><small>Earn $0.050</small></button>
+          <button class="tile" data-screen="missions">🎯<b>MISSIONS</b><small>Earn bonuses</small></button>
+          <button class="tile" data-screen="leaderboard">🏆<b>LEADERBOARD</b><small>Top runners</small></button>
+          <button class="tile" data-screen="profile">👤<b>PROFILE</b><small>Your account</small></button>
+          <button class="tile" data-screen="settings">⚙️<b>SETTINGS</b><small>Account & withdrawal</small></button>
+        </div>
+        <p class="rate">🪙 20,000 Coins = $1 · Minimum withdrawal $25</p>
+        <p class="nextmap">Next map: <b id="nextMap">Golden Desert</b></p>
+      </div>
+    </section>
+
+    <section id="game" class="screen game-screen">
+      <div class="hud">
+        <span>LV <b id="levelHud">1</b></span>
+        <span>❤️ <b id="healthHud">3</b></span>
+        <span>⏱ <b id="timeHud">60</b></span>
+        <span>🪙 <b id="runCoins">0</b></span>
+        <span>💎 <b id="runGems">0</b></span>
+        <span>⭐ <b id="runScore">0</b></span>
+      </div>
+      <div class="map-name" id="mapName">Emerald Valley</div>
+      <canvas id="gameCanvas"></canvas>
+      <div class="touch-controls">
+        <button id="leftBtn">◀</button><button id="jumpBtn">▲</button><button id="rightBtn">▶</button>
+      </div>
+      <button class="pause" id="pauseBtn">Ⅱ</button>
+      <div class="hint">SWIPE ◀ ▶ · TAP ▲ TO JUMP</div>
+    </section>
+
+    <section id="result" class="screen modal-screen">
+      <div class="modal">
+        <div class="badge">🏁</div><h2>RUN COMPLETE</h2>
+        <p id="resultReason">You escaped!</p>
+        <div class="reward-row"><span>🪙 <b id="resultCoins">0</b></span><span>💎 <b id="resultGems">0</b></span><span>⭐ <b id="resultScore">0</b></span></div>
+        <div id="adGate" class="adgate">
+          <b>LEVEL UP AD</b><p>Watch an ad before unlocking the next level.</p>
+          <button class="primary" id="levelAdBtn">▶ WATCH AD</button>
+        </div>
+        <button class="secondary" id="homeAfterRun">HOME</button>
+      </div>
+    </section>
+
+    <section id="spin" class="screen page"><div class="page-card">
+      <button class="back" data-screen="home">←</button><h2>🎡 Lucky Spin</h2>
+      <p class="muted">Spin to win coins, diamonds or cash.</p>
+      <div class="wheel-wrap"><div class="pointer">▼</div><div id="wheel" class="wheel"><span>20🪙</span><span>50🪙</span><span>100🪙</span><span>10💎</span><span>30💎</span><span>50💎</span><span>$0.020</span></div></div>
+      <button class="primary big" id="spinBtn">🎡 SPIN NOW</button>
+      <div id="spinResult" class="result-box hidden"></div>
+      <button class="primary hidden" id="claimSpinBtn">📺 WATCH AD & CLAIM</button>
+      <p class="muted small">The reward is added only after the ad is completed.</p>
+    </div></section>
+
+    <section id="referral" class="screen page"><div class="page-card">
+      <button class="back" data-screen="home">←</button><h2>👥 Referral Center</h2>
+      <div class="ref-hero">INVITE FRIENDS<br><b>Earn referral bonuses</b></div>
+      <p>Your referral code</p><div class="codebox" id="refCode">TR-000000</div>
+      <button class="primary" id="copyRef">📋 COPY INVITE LINK</button>
+      <div class="ref-stats"><div><b id="refCount">0</b><small>Friends</small></div><div><b>$<span id="refCash">0.000</span></b><small>Referral Cash</small></div></div>
+      <p class="muted">Share your invite link with friends. Referral rewards should be verified server-side before real cash is credited.</p>
+    </div></section>
+
+    <section id="missions" class="screen page"><div class="page-card">
+      <button class="back" data-screen="home">←</button><h2>🎯 Missions</h2>
+      <div class="mission">🪙 Collect 100 coins <b>+500</b></div><div class="mission">🏃 Finish 3 runs <b>+1,000</b></div><div class="mission">💎 Collect 10 gems <b>+2,000</b></div>
+    </div></section>
+
+    <section id="leaderboard" class="screen page"><div class="page-card">
+      <button class="back" data-screen="home">←</button><h2>🏆 Leaderboard</h2>
+      <div class="rank"><b>🥇 Alex</b><span>25,000</span></div><div class="rank"><b>🥈 Emma</b><span>22,500</span></div><div class="rank"><b>🥉 John</b><span>21,700</span></div><div class="rank you"><b>👤 You</b><span id="leaderBest">0</span></div>
+    </div></section>
+
+    <section id="profile" class="screen page"><div class="page-card">
+      <button class="back" data-screen="home">←</button><h2>👤 Profile</h2><div class="profile-avatar">🏃</div><h3>Treasure Runner</h3>
+      <div class="profile-list"><p>🪙 Coins <b id="pCoins">0</b></p><p>💎 Gems <b id="pGems">0</b></p><p>🏆 Best Score <b id="pBest">0</b></p><p>🎮 Runs <b id="pRuns">0</b></p><p>👥 Referrals <b id="pRefs">0</b></p></div>
+    </div></section>
+
+    <section id="settings" class="screen page"><div class="page-card">
+      <button class="back" data-screen="home">←</button><h2>⚙️ Settings</h2>
+      <div class="settings-card"><span>💸 Withdraw</span><small>Minimum $25</small><button class="primary" data-screen="withdraw">OPEN</button></div>
+      <div class="settings-card"><span>🪙 Ad reward</span><small>+20 Coins per completed rewarded ad</small></div>
+      <div class="settings-card"><span>👥 Referral</span><small>$0.050 referral commission</small></div>
+      <p class="muted small">Real cash rewards require a secure backend and server-side verification. Never trust localStorage for real money balances.</p>
+    </div></section>
+
+    <section id="withdraw" class="screen page"><div class="page-card">
+      <button class="back" data-screen="settings">←</button><h2>💸 Withdraw</h2><div class="balance">$<span id="withdrawCash">0.000</span></div>
+      <p class="muted">Minimum withdrawal: $25 · 500,000 Coins equivalent</p><div class="method">💳 PayPal</div><div class="method">₿ Crypto</div><button class="primary" id="withdrawBtn">REQUEST WITHDRAWAL</button>
+      <p class="muted small">This demo does not process real payments. Connect a secure backend before enabling real withdrawals.</p>
+    </div></section>
+  </main>
+
+  <div id="toast"></div>
+</div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- Monetag: paste the exact SDK tag generated in your Monetag dashboard here.
+     It creates a global function such as show_123456(). Do not invent the zone ID. -->
+<script src="game.js"></script>
+</body>
+</html>
