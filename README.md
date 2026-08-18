@@ -1,23 +1,25 @@
-# Treasure Rush v2 — Playable MVP
+# Treasure Rush Pro v2
 
-Features:
-- 2D top-down Phaser game
-- 2-minute rounds
-- Touch joystick + WASD fallback
-- Coins, gems, treasure chests
-- Score and result screen
-- Daily Missions screen
-- Leaderboard screen
-- Profile screen
-- Withdrawal UI
-- 20,000 Coins = $1
-- Withdrawal UI becomes eligible at $100 = 2,000,000 Coins
-- Referral cash is separate and displayed only in referral/profile areas
+A polished mobile-first runner prototype for GitHub Pages.
 
-Important:
-This is a frontend prototype. Real Telegram authentication, server-side balances,
-anti-cheat, database, referral validation and real-money payout are NOT implemented yet.
+## Files
+- index.html
+- style.css
+- game.js
 
-Run:
-python -m http.server 8080
-Then open http://localhost:8080
+## Features
+- 3-lane endless runner with jump, obstacles and a pursuer
+- Health system
+- Multiple maps that unlock by level
+- Coins, gems and score
+- Spin wheel with 20/50/100 coins, 10/30/50 gems, and $0.020
+- Ad gate before claiming spin rewards
+- Ad gate before level-up
+- Referral center
+- Missions, leaderboard, profile and withdraw screens
+- LocalStorage demo persistence
+
+## Important
+The ad player in this version is a DEMO countdown. Replace `demoAd()` in game.js with the real rewarded-ad SDK callback. Only credit rewards after the ad provider's verified completion/reward event.
+
+Real referrals, balances and withdrawals must be verified server-side; never trust LocalStorage for real-money balances.
