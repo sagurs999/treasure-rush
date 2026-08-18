@@ -1,47 +1,448 @@
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
-body,
-#app,
-#game-container {
+body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-
-html,
-body {
-  background: #07131b;
-}
-
-body {
+  background: #071a14;
   font-family: Arial, sans-serif;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
+  color: white;
+}
+
+button {
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
 }
 
 #app {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-#game-container {
-  position: relative;
+.screen {
+  display: none;
   width: 100%;
   height: 100%;
+  min-height: 100vh;
+  overflow: auto;
+  padding: 25px 18px;
+  background:
+    radial-gradient(circle at top, #174b34, #071a14 65%);
 }
 
-canvas {
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* LOGO */
+
+.logo {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 38px;
+  font-weight: bold;
+  color: #ffd84d;
+  text-shadow: 0 3px 15px rgba(255, 216, 77, .25);
+}
+
+.logo strong {
   display: block;
-  margin: auto;
+  font-size: 60px;
+  color: #4fc3ff;
+}
+
+/* BALANCE */
+
+.balance-card {
+  width: min(700px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 25px 0;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(18, 53, 40, .95);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.balance-card div {
+  text-align: center;
+}
+
+.balance-card span {
+  display: block;
+  font-size: 13px;
+  color: #9fc4b3;
+}
+
+.balance-card b {
+  display: block;
+  margin-top: 7px;
+  font-size: 20px;
+}
+
+/* BUTTONS */
+
+.play-btn {
+  width: min(430px, 90%);
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #32c85a, #188d3b);
+  font-size: 25px;
+  box-shadow: 0 8px 25px rgba(38, 190, 80, .2);
+}
+
+.play-btn:active {
+  transform: scale(.97);
+}
+
+.menu-grid {
+  width: min(700px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.menu-grid button {
+  min-height: 75px;
+  border-radius: 16px;
+  background: #173d2e;
+  font-size: 28px;
+  border: 1px solid rgba(255,255,255,.07);
+}
+
+.menu-grid span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #c4dfd2;
+}
+
+.rate {
+  margin-top: 20px;
+  text-align: center;
+  color: #ffd84d;
+  font-weight: bold;
+}
+
+.rate small {
+  color: #a7c5b6;
+}
+
+/* GAME */
+
+.game-screen {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  background: #276f3d;
+}
+
+.game-hud {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+  width: min(700px, 94%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(4, 20, 14, .85);
+  font-size: 15px;
+  text-align: center;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
   touch-action: none;
+}
+
+/* JOYSTICK */
+
+#joystick {
+  position: absolute;
+  bottom: 35px;
+  left: 30px;
+
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+  background: rgba(255,255,255,.13);
+  border: 2px solid rgba(255,255,255,.25);
+  z-index: 30;
+}
+
+#joystickKnob {
+  position: absolute;
+
+  width: 55px;
+  height: 55px;
+
+  left: 31px;
+  top: 31px;
+
+  border-radius: 50%;
+  background: rgba(255,255,255,.38);
+}
+
+.exit-game {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  background: #a82f3a;
+  z-index: 30;
+}
+
+/* PAGES */
+
+.page-title {
+  margin-top: 20px;
+  margin-bottom: 25px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #ffd84d;
+  text-align: center;
+}
+
+.card,
+.profile-card,
+.withdraw-card,
+.result-box {
+  width: min(650px, 100%);
+  padding: 25px;
+  border-radius: 22px;
+  background: #123527;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+
+/* MISSIONS */
+
+.mission {
+  padding: 20px 5px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.mission:last-child {
+  border-bottom: 0;
+}
+
+.mission span {
+  display: block;
+  font-size: 17px;
+}
+
+.mission b {
+  display: block;
+  margin-top: 7px;
+  color: #ffd84d;
+}
+
+/* LEADERBOARD */
+
+.leaderboard div {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 5px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.leaderboard b {
+  color: #ffd84d;
+}
+
+.leaderboard .you {
+  color: #67e89a;
+}
+
+/* PROFILE */
+
+.profile-card {
+  text-align: center;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #245d44;
+  font-size: 45px;
+}
+
+.profile-card p {
+  font-size: 17px;
+  margin: 18px;
+}
+
+.profile-card hr {
+  border-color: rgba(255,255,255,.08);
+}
+
+.ref-money {
+  color: #70e0a0;
+}
+
+/* WITHDRAW */
+
+.withdraw-card {
+  text-align: center;
+}
+
+.withdraw-card h1 {
+  color: #ffd84d;
+  font-size: 35px;
+}
+
+.dollar {
+  margin: 10px 0;
+  font-size: 42px;
+  font-weight: bold;
+  color: #70e0a0;
+}
+
+.withdraw-info {
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 12px;
+  background: #0d291e;
+  line-height: 1.8;
+  color: #b8d5c6;
+}
+
+.withdraw-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.withdraw-methods button {
+  padding: 13px 5px;
+  border-radius: 10px;
+  background: #285a89;
+}
+
+#selectedMethod {
+  margin: 15px;
+  color: #ffd84d;
+}
+
+.withdraw-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: #9d3540;
+  font-size: 17px;
+}
+
+/* SECONDARY */
+
+.secondary-btn {
+  margin-top: 20px;
+  padding: 14px 30px;
+  border-radius: 13px;
+  background: #285b87;
+}
+
+/* RESULT */
+
+.result-box {
+  margin-top: 70px;
+  text-align: center;
+}
+
+.result-title {
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #ffd84d;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.result-row strong {
+  color: #ffd84d;
+}
+
+/* TOAST */
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 25px;
+  transform: translateX(-50%);
+  z-index: 999;
+
+  display: none;
+
+  padding: 13px 20px;
+  border-radius: 12px;
+
+  background: #0c241a;
+  border: 1px solid #4d8b69;
+
+  color: white;
+  text-align: center;
+}
+
+/* MOBILE */
+
+@media (max-width: 500px) {
+
+  .logo {
+    font-size: 28px;
+  }
+
+  .logo strong {
+    font-size: 48px;
+  }
+
+  .balance-card {
+    padding: 12px 5px;
+  }
+
+  .balance-card b {
+    font-size: 16px;
+  }
+
+  .menu-grid button {
+    min-height: 70px;
+  }
+
+  .game-hud {
+    font-size: 12px;
+  }
+
 }
